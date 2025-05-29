@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'MAVEN_HOME'
+        maven 'MAVEN_HOME' // Configure dans Jenkins > Global Tool Configuration
     }
 
     environment {
@@ -26,7 +26,7 @@ pipeline {
         stage('Upload to Artifactory') {
             steps {
                 script {
-                    def server = Artifactory.server 'artifactory-creds'
+                    def server = Artifactory.server('artifactory-creds') // ID des credentials
 
                     def uploadSpec = """{
                       "files": [
@@ -42,7 +42,7 @@ pipeline {
             }
         }
 
-        stage('Archive') {
+        stage('Archive WAR') {
             steps {
                 archiveArtifacts artifacts: 'target/*.war', fingerprint: true
             }
