@@ -2,11 +2,10 @@ pipeline {
     agent any
 
     tools {
-        maven 'MAVEN_HOME' // Configure dans Jenkins > Global Tool Configuration
+        maven 'MAVEN_HOME' // Assure-toi que ce nom est configuré dans Jenkins > Tools
     }
 
     environment {
-        ARTIFACTORY_URL = "http://192.168.50.40:8081/artifactory"
         ARTIFACTORY_REPO = "libs-release-local"
     }
 
@@ -26,7 +25,7 @@ pipeline {
         stage('Upload to Artifactory') {
             steps {
                 script {
-                    def server = Artifactory.server('artifactory-creds') // ID des credentials
+                    def server = Artifactory.server('ce6c3ed8-6038-4735-9f24-9f2e890f559')
 
                     def uploadSpec = """{
                       "files": [
