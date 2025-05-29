@@ -2,7 +2,12 @@ pipeline {
     agent any
 
     tools {
-        maven 'MAVEN_HOME' // Assure-toi que ce nom est configuré dans Jenkins > Global Tools
+        maven 'MAVEN_HOME'
+    }
+
+    environment {
+        ARTIFACTORY_URL = "http://192.168.50.40:8081/artifactory"
+        ARTIFACTORY_REPO = "libs-release-local"
     }
 
     stages {
@@ -18,7 +23,26 @@ pipeline {
             }
         }
 
-        stage('Archive WAR') {
+        stage('Upload to Artifactory') {
+            steps {
+                script {
+                    def server = Artifactory.server 'artifactory-creds'
+
+                    def uploadSpec = """{
+                      "files": [
+                        {
+                          "pattern": "target/*.war",
+                          "target": "${ARTIFACTORY_REPO}/petclinic/"
+                        }
+                      ]
+                    }"""
+
+                    server.upload(uploadSpec)
+                }
+            }
+        }
+
+        stage('Archive') {
             steps {
                 archiveArtifacts artifacts: 'target/*.war', fingerprint: true
             }
