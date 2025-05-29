@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'MAVEN_HOME' // Assure-toi que ce nom est configuré dans Jenkins > Tools
+        maven 'MAVEN_HOME'
     }
 
     environment {
